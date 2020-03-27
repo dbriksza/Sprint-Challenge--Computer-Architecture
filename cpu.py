@@ -104,18 +104,30 @@ class CPU:
             L=0
             G=0
             self.fl = 0b00000001
+        else:
+            E=0
+            L=0
+            G=0
+            self.fl = 0b00000000
         self.pc += 3
 
     def do_JEQ(self):
         if self.fl == 0b00000001:
-            self.pc = self.ram_read(self.reg[2])
+            reg = self.ram_read(self.pc + 1)
+            self.pc = self.reg[reg]
+        else:
+            self.pc+=2
 
     def do_JNE(self):
         if self.fl == 0b00000000:
-            self.pc = self.ram_read(self.reg[2])
+            reg = self.ram_read(self.pc + 1)
+            self.pc = self.reg[reg]
+        else:
+            self.pc+=2
 
     def do_JMP(self):
-        self.pc = self.ram_read(self.reg[2])
+        reg = self.ram_read(self.pc + 1)
+        self.pc = self.reg[reg]
 
 
     def run(self):
